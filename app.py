@@ -1,5 +1,7 @@
 import streamlit as st
 from backend.pdf_loader import extract_text_from_pdf
+from backend.chunking import split_text_into_chunks
+from backend.embedding import create_embedding
 
 st.set_page_config(
     page_title="AI Research Assistant",
@@ -29,10 +31,22 @@ if uploaded_file is not None:
 
     pdf_text = extract_text_from_pdf(uploaded_file)
 
-    st.subheader("Extracted text")
+    chunks = split_text_into_chunks(pdf_text)
 
-    st.text_area(
-        "PDF content", pdf_text[:1000], height=300 
-    )
+    st.success(f"Total chunks: {len(chunks)}")
+
+    for i,chunk in enumerate(chunks[:10]):
+        st.subheader(f"Chunk {i+1}: {len(chunk)} characters")
+        st.write(chunk)
+
+    embeddings = create_embedding(chunks)
+    st.success(f"Created {len(embeddings)} embeddings")
+    st.write("Embedding shape:", embeddings.shape)
+
+    # st.subheader("Extracted text")
+
+    # st.text_area(
+    #     "PDF content", pdf_text[:1000], height=300 
+    # )
 else:
     st.warning("unable to upload file")
