@@ -2,7 +2,7 @@ import streamlit as st
 from backend.pdf_loader import extract_text_from_pdf
 from backend.chunking import split_text_into_chunks
 from backend.embedding import create_embedding
-
+from backend.vector_db import create_collection
 st.set_page_config(
     page_title="AI Research Assistant",
     page_icon="📚",
@@ -50,3 +50,7 @@ if uploaded_file is not None:
     # )
 else:
     st.warning("unable to upload file")
+
+collection= create_collection()
+
+st.success("Collection created successfully")
