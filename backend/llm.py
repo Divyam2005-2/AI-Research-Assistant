@@ -15,17 +15,11 @@ def generate_answer(question, context):
     context_text = "\n\n".join(context)
 
     prompt = f"""
-You are an AI Research Assistant.
+Answer using the provided context.
 
-Your task is to answer the user's question ONLY using the information provided in the context below.
+If the answer is partially available, summarize the available information.
 
-Rules:
-1. Use only the provided context.
-2. Do not make up or assume information.
-3. If the answer is not available in the context, reply:
-   "I couldn't find that information in the uploaded document."
-4. Keep the answer clear, concise, and easy to understand.
-
+Only say "I couldn't find..." if the retrieved context contains no relevant information.
 Context:
 {context_text}
 

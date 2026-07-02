@@ -19,6 +19,8 @@ def load_css():
             unsafe_allow_html=True
         )
 load_css()
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 # Sidebar
 with st.sidebar:
     st.title("📄 Upload Research Paper")
@@ -53,43 +55,48 @@ if uploaded_file is not None:
     embeddings = create_embedding(chunks)
     collection= create_collection()
     add_chunks_to_db(collection, chunks,embeddings)
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("📄 File", uploaded_file.name)
-    with col2:
-        st.metric("🧩 Chunks", len(chunks))
-    with col3:
-        st.metric("🤖 Model", "Gemini 2.5 Flash")
+    left_col,right_col = st.columns([1,2], gap="large")
+    with left_col:
+        st.subheader("Paper Information")
+        st.write(f"**Filename:** {uploaded_file.name}")
+        st.write(f"**Total Chunks:** {len(chunks)}")
+        st.write("**Embedding model:** all-MiniLM-L6-v2")
+        st.write("**LLM:** Gemini 2.5 Flash")
+        st.success("Ready for Questions ✅")
     st.divider()
+    with right_col:
+        st.subheader("💬 Ask Your Question")
+        user_question=st.chat_input("Example: Summarize the paper...")
 
 # User question
-    st.subheader("💬 Ask Your Question")
-    user_question=st.text_input("",placeholder="Example: What is the main contribution of this paper?")
+#     st.subheader("💬 Ask Your Question")
+#     user_question=st.text_input("",placeholder="Example: What is the main contribution of this paper?")
 
-    if user_question:
-        query_embedding= create_embedding(user_question)
-        result_chunks= search_chunks(collection, query_embedding, n_results=3)
-        with st.spinner("🤖 Gemini is analyzing the research paper..."):
-            answer= generate_answer(
-                user_question,
-                result_chunks["documents"][0]
-        )
-        with st.container():
-            st.subheader("🤖 AI Answer")
-            st.markdown(
-                f"""<div class="answer-box">
-                    {answer}
-                </div>
-                """,
-                unsafe_allow_html=True,
+        if user_question:
+            query_embedding= create_embedding(user_question)
+            result_chunks= search_chunks(collection, query_embedding, n_results=3)
+            with st.spinner("🤖 Gemini is analyzing the research paper..."):
+                answer= generate_answer(
+                    user_question,
+                    result_chunks["documents"][0]
             )
+            st.session_state.messages.append(
+                {
+                    "question":user_question,
+                    "answer": answer
+                }
+            )
+        st.subheader("💬 Conversation")
+        for message in st.session_state.messages:
+            st.chat_message("user").write(message["question"])
+            st.chat_message("assistant").write(message["answer"])
             st.divider()
         
-        st.subheader("📖 Retrieved Sources")
-        for i, chunk in enumerate(result_chunks["documents"][0]):
-            with st.expander(f"📄 Source {i+1}"):
-                st.write(chunk)
-        st.markdown("---")
+            st.subheader("📖 Retrieved Sources")
+            for i, chunk in enumerate(result_chunks["documents"][0]):
+                with st.expander(f"📄 Source {i+1}"):
+                    st.write(chunk)
+            st.markdown("---")
 else:
     st.info("👈 Upload a research paper from the sidebar to get started.")
     st.divider()

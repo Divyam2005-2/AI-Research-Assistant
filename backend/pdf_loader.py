@@ -1,5 +1,6 @@
+import streamlit as st
 import fitz
-
+@st.cache_data
 def extract_text_from_pdf(pdf_file):
     # Get the uploaded PDF as bytes
     pdf_bytes = pdf_file.getvalue()
