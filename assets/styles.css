@@ -1,0 +1,86 @@
+/* ---------- Main Container ---------- */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 1200px;
+}
+
+/* ---------- Hero Banner ---------- */
+.hero {
+    background: linear-gradient(135deg, #4F8BF9, #7B61FF);
+    color: white;
+    padding: 35px;
+    border-radius: 18px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.hero h1 {
+    margin: 0;
+    font-size: 2.4rem;
+    font-weight: 700;
+}
+
+.hero p {
+    margin-top: 12px;
+    font-size: 1.05rem;
+    opacity: 0.95;
+}
+
+/* ---------- Metric Cards ---------- */
+[data-testid="stMetric"] {
+    background: rgb(0, 0, 0);
+    border: 1px solid #e8e8e8;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Metric Label */
+label[data-testid="stMetricLabel"] {
+    color: #9ea4b0;
+    font-weight: 600;
+}
+
+/* Metric Value */
+div[data-testid="stMetricValue"] {
+    color: #4F8BF9;
+    font-weight: bold;
+    font-size: 26px;
+}
+
+/* ---------- Answer Card ---------- */
+.answer-box {
+    color: black;
+    background: #f8f9fc;
+    padding: 22px;
+    border-radius: 14px;
+    border-left: 6px solid #4F8BF9;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+/* ---------- Sidebar ---------- */
+section[data-testid="stSidebar"] {
+    border-right: 1px solid #e5e5e5;
+}
+
+/* ---------- Buttons ---------- */
+.stButton > button {
+    border-radius: 10px;
+    width: 100%;
+    font-weight: 600;
+}
+
+/* ---------- Text Input ---------- */
+.stTextInput input {
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    padding: 10px;
+}
+
+/* ---------- Expanders ---------- */
+.streamlit-expanderHeader {
+    font-weight: 600;
+}
